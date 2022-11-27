@@ -1,0 +1,9 @@
+Before running build.sh, make sure strongswan is installed with the libvici.h.
+"pkg install strongswan" should do the trick
+
+add something like this to /usr/local/etc/dhcpcd.exit-hook
+
+case "$reason" in
+BOUND6|RENEW6|REBIND6|REBOOT6|INFORM6)
+        /usr/local/sbin/dynamicprefixvici
+esac
