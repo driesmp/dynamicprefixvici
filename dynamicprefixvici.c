@@ -10,7 +10,7 @@
   * @param value The name of the environment value
   * @return char* An allocated string in memory with the found string, NULL in case the environment value does not exist
 */
-char* getEnvironmentValue(const char* value);
+static char* getEnvironmentValue(const char* value);
 
 /**
   * @brief Creates a load-pool message
@@ -19,7 +19,7 @@ char* getEnvironmentValue(const char* value);
   * @param addressPool The address pool
   * @return vici_req_t* The message to send
 */
-vici_req_t* createMessage(char* poolName, char* addressPool);
+static vici_req_t* createMessage(char* poolName, char* addressPool);
 
 int main(void)
 {
@@ -89,6 +89,7 @@ int main(void)
                     sprintf(betweenMessage, "Received message: \n%s\n", (char*)response); 
                     strcat(diagnosticMessage, betweenMessage);
                 }
+
                 vici_disconnect(connection);
             }
             else
@@ -113,7 +114,7 @@ int main(void)
     return 0;
 }
 
-char* getEnvironmentValue(const char* value)
+static char* getEnvironmentValue(const char* value)
 {
     char* readValue = NULL;
     // It cannot be guaranteed that the content of the pointer will remain the same on a subsequent getenv call, so make a copy
@@ -121,7 +122,7 @@ char* getEnvironmentValue(const char* value)
 
     if(environmentValue != NULL)
     {
-        int lengte = strlen(environmentValue);
+        size_t lengte = strlen(environmentValue);
         readValue = malloc(lengte + 1);
         strcpy(readValue, environmentValue);
     }
@@ -129,7 +130,7 @@ char* getEnvironmentValue(const char* value)
     return readValue;
 }
 
-vici_req_t* createMessage(char* poolName, char* addressPool)
+static vici_req_t* createMessage(char* poolName, char* addressPool)
 {
     /*
     <pool name> = {
@@ -140,7 +141,7 @@ vici_req_t* createMessage(char* poolName, char* addressPool)
 
     vici_req_t* message = vici_begin("load-pool");
     vici_begin_section(message, poolName);
-    vici_add_key_value(message, "addrs", addressPool, strlen(addressPool));
+    vici_add_key_value(message, "addrs", addressPool, (int)strlen(addressPool));
     vici_end_section(message);
 
     return message;
