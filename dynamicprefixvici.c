@@ -32,10 +32,10 @@ int main(void)
     char betweenMessage[4096] = {0};
     char diagnosticMessage[16384] = {0};
 
-    // Check is a new prefix is defined
+    // Check if a new prefix is defined
     if(newPrefix != NULL)
     {
-        // Check whether only a new prefix is defined or the new prefix is defferent from the old prefix
+        // Check whether only a new prefix is defined or the new prefix is different from the old prefix
         if(oldPrefix == NULL || strcmp(newPrefix, oldPrefix))
         {
             // They are different, add to dianogstic message
@@ -47,7 +47,7 @@ int main(void)
             sprintf(betweenMessage, "newPrefix: %s\n", newPrefix);
             strcat(diagnosticMessage, betweenMessage);
 
-            // Initialize Vici library
+            // Initialize vici library
             vici_init();
 
             // Create addressPool, length old string + "/120" + 0 at the end
