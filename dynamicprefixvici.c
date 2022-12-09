@@ -32,16 +32,22 @@ int main(void)
     char betweenMessage[4096] = {0};
     char diagnosticMessage[16384] = {0};
 
-    if(newPrefix != NULL && oldPrefix != NULL)
+    // Check is a new prefix is defined
+    if(newPrefix != NULL)
     {
-        if(strcmp(newPrefix, oldPrefix))
+        // Check whether only a new prefix is defined or the new prefix is defferent from the old prefix
+        if(oldPrefix == NULL || strcmp(newPrefix, oldPrefix))
         {
             // They are different, add to dianogstic message
-            sprintf(betweenMessage, "oldPrefix: %s\n", oldPrefix);
-            strcat(diagnosticMessage, betweenMessage);
+            if(oldPrefix != NULL)
+            {
+                sprintf(betweenMessage, "oldPrefix: %s\n", oldPrefix);
+                strcat(diagnosticMessage, betweenMessage);
+            }
             sprintf(betweenMessage, "newPrefix: %s\n", newPrefix);
             strcat(diagnosticMessage, betweenMessage);
 
+            // Initialize Vici library
             vici_init();
 
             // Create addressPool, length old string + "/120" + 0 at the end
@@ -106,8 +112,8 @@ int main(void)
     }
     else
     {
-        // This should never happen as dhcpcd always passes the env variables empty if needed
-        strcat(diagnosticMessage, "Status: No environment variables");
+        // No new prefix is defined
+        strcat(diagnosticMessage, "Status: No environment variable for new prefix");
     }
 
     puts(diagnosticMessage);
