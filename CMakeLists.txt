@@ -4,7 +4,7 @@ project(updateip VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
-add_compile_options(-Wall -Wextra -pedantic -Weverything -march=native -std=c2x) #-Weverything -fanalyzer
+add_compile_options(-Wall -Wextra -pedantic -march=native -std=gnu2x) #-Weverything -fanalyzer
 
 add_executable(updateip dynamicprefixvici.c)
 
