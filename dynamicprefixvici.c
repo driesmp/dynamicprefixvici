@@ -235,7 +235,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
     {
         // No pool name was defined
 
-        puts("Pool name has to be defined with -h <pool name>");
+        puts("Pool name is required, see -h for usage");
         exit(1);
     }
 }
