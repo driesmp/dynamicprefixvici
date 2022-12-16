@@ -40,6 +40,11 @@ static vici_req_t* createMessage(char* poolName, char* addressPool);
  */
 static void ParseCommandLineArguments(int argc, char** argv, CommandLineArguments* arguments);
 
+/**
+ * @brief prints the usage of the program
+ */
+static void Usage();
+
 int main(int argc, char** argv)
 {
     // Parse command line arguments
@@ -207,7 +212,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
         switch (opt)
         {
         case 'h':// Help
-            Usage()
+            Usage();
             exit(1);
             break;
         case 'p': // Pool name
