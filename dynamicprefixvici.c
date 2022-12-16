@@ -31,8 +31,8 @@ static char* getEnvironmentValue(const char* value);
 static vici_req_t* createMessage(char* poolName, char* addressPool);
 
 /**
- * @brief get all command line arguments an passes gives it back in a struct.
- * If unsupportet arguments are given, it terminates the program
+ * @brief get all command line arguments and gives it back in a struct.
+ * If unsupported arguments are given, it terminates the program
  * 
  * @param argc 
  * @param argv 
@@ -49,7 +49,7 @@ int main(int argc, char** argv)
     // Set default values
     char* newPrefixEnv = "new_dhcp6_ia_pd1_prefix1";
     char* oldPrefixEnv = "old_dhcp6_ia_pd1_prefix1";
-    char* poolName = "global-ipv6";
+    char* poolName;
     
     if(arguments.newPrefixEnv != NULL)
     {
@@ -197,7 +197,7 @@ static vici_req_t* createMessage(char* poolName, char* addressPool)
 static void ParseCommandLineArguments(int argc, char** argv, CommandLineArguments* arguments)
 {
     int opt;
-    opterr = 0; // getopt moet zelf geen foutmelding geven
+    opterr = 0; // no error message by getopt
     arguments->poolName = NULL;
     arguments->newPrefixEnv = NULL;
     arguments->oldPrefixEnv = NULL;
@@ -228,5 +228,14 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
             exit(1);
             break;
         }
+    }
+
+    // Check whether a pool name is defined
+    if(arguments->poolName == NULL)
+    {
+        // No pool name was defined
+
+        puts("Pool name has to be defined with -h <pool name>");
+        exit(1);
     }
 }
