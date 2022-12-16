@@ -3,6 +3,15 @@
 #include <string.h>
 #include <errno.h>
 #include <libvici.h>
+#include <unistd.h>
+
+typedef struct CommandLineArguments
+{
+    char* poolName;
+    char* oldPrefixEnv;
+    char* newPrefixEnv;
+} CommandLineArguments;
+
 
 /**
   * @brief Retrieves a given environment value by name and places it in an allocated place in memory
@@ -21,12 +30,44 @@ static char* getEnvironmentValue(const char* value);
 */
 static vici_req_t* createMessage(char* poolName, char* addressPool);
 
-int main(void)
-{
-    char* newPrefix = getEnvironmentValue("new_dhcp6_ia_pd1_prefix1");
-    char* oldPrefix = getEnvironmentValue("old_dhcp6_ia_pd1_prefix1");
-    char* poolName = "global-ipv6";
+/**
+ * @brief get all command line arguments and gives it back in a struct.
+ * If unsupported arguments are given, it terminates the program
+ * 
+ * @param argc 
+ * @param argv 
+ * @param arguments 
+ */
+static void ParseCommandLineArguments(int argc, char** argv, CommandLineArguments* arguments);
 
+int main(int argc, char** argv)
+{
+    // Parse command line arguments
+    CommandLineArguments arguments;
+    ParseCommandLineArguments(argc, argv, &arguments);
+
+    // Set default values
+    char* newPrefixEnv = "new_dhcp6_ia_pd1_prefix1";
+    char* oldPrefixEnv = "old_dhcp6_ia_pd1_prefix1";
+    char* poolName;
+    
+    if(arguments.newPrefixEnv != NULL)
+    {
+        newPrefixEnv = arguments.newPrefixEnv;
+    }
+    if(arguments.oldPrefixEnv != NULL)
+    {
+        oldPrefixEnv = arguments.oldPrefixEnv;
+    }
+    if(arguments.poolName != NULL)
+    {
+        poolName = arguments.poolName;
+    }
+
+    // Get environment values
+    char* newPrefix = getEnvironmentValue(newPrefixEnv);
+    char* oldPrefix = getEnvironmentValue(oldPrefixEnv);
+    
     // 20kB of space in memory to compose a message
     // A place in memory where the diagnostic message can be stored
     char betweenMessage[4096] = {0};
@@ -151,4 +192,50 @@ static vici_req_t* createMessage(char* poolName, char* addressPool)
     vici_end_section(message);
 
     return message;
+}
+
+static void ParseCommandLineArguments(int argc, char** argv, CommandLineArguments* arguments)
+{
+    int opt;
+    opterr = 0; // no error message by getopt
+    arguments->poolName = NULL;
+    arguments->newPrefixEnv = NULL;
+    arguments->oldPrefixEnv = NULL;
+
+    while((opt = getopt(argc, argv, ":p:n:o:h")) != -1)
+    {
+        switch (opt)
+        {
+        case 'h':// Help
+            puts("Supported arguments:\n-h Help massage\n-p <pool name> sets pool name\n-n <new prefix environment variable name> set name of environment variable which contains new prefix\n-o <old prefix environment variable name> set name of environment variable which contains old prefix");
+            exit(1);
+            break;
+        case 'p': // Pool name
+            arguments->poolName = optarg;
+            break;
+        case 'n':
+            arguments->newPrefixEnv = optarg;
+            break;
+        case 'o':
+            arguments->oldPrefixEnv = optarg;
+            break;
+        case ':':
+            puts("All options require arguments");
+            exit(1);
+            break;
+        case '?':
+            puts("Unrecognized argument");
+            exit(1);
+            break;
+        }
+    }
+
+    // Check whether a pool name is defined
+    if(arguments->poolName == NULL)
+    {
+        // No pool name was defined
+
+        puts("Pool name has to be defined with -h <pool name>");
+        exit(1);
+    }
 }
