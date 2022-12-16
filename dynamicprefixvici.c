@@ -207,7 +207,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
         switch (opt)
         {
         case 'h':// Help
-            puts("Supported arguments:\n-h Help massage\n-p <pool name> sets pool name\n-n <new prefix environment variable name> set name of environment variable which contains new prefix\n-o <old prefix environment variable name> set name of environment variable which contains old prefix");
+            Usage()
             exit(1);
             break;
         case 'p': // Pool name
@@ -238,4 +238,13 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
         puts("Pool name is required, see -h for usage");
         exit(1);
     }
+}
+
+static void Usage()
+{
+    printf("usage: dynamicprefixvici [-h] [-n newPrefixName] [-o oldPrefixName] -p poolName\n"
+            "-h help message\n"
+            "-p poolName: pool name added to strongSwan\n"
+            "-n newPrefixName: set name of environment variable which contains new prefix\n"
+            "-o oldPrefixName: set name of environment variable which contains old prefix");
 }
