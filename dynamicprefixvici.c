@@ -251,5 +251,6 @@ static void Usage()
             "-h help message\n"
             "-p poolName: pool name added to strongSwan\n"
             "-n newPrefixName: set name of environment variable which contains new prefix\n"
-            "-o oldPrefixName: set name of environment variable which contains old prefix");
+            "-o oldPrefixName: set name of environment variable which contains old prefix"
+            );
 }
