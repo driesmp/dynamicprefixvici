@@ -7,9 +7,9 @@
 
 typedef struct CommandLineArguments
 {
-    char* poolName;
-    char* oldPrefixEnv;
-    char* newPrefixEnv;
+    char* pool_name;
+    char* old_prefix_env;
+    char* new_prefix_env;
 } CommandLineArguments;
 
 
@@ -19,16 +19,16 @@ typedef struct CommandLineArguments
   * @param value The name of the environment value
   * @return char* An allocated string in memory with the found string, NULL in case the environment value does not exist
 */
-static char* getEnvironmentValue(const char* value);
+static char* GetEnvironmentValue(const char* value);
 
 /**
   * @brief Creates a load-pool message
   *
-  * @param poolName name the pool should have
-  * @param addressPool The address pool
+  * @param pool_name name the pool should have
+  * @param address_pool The address pool
   * @return vici_req_t* The message to send
 */
-static vici_req_t* createMessage(char* poolName, char* addressPool);
+static vici_req_t* CreateMessage(char* pool_name, char* address_pool);
 
 /**
  * @brief get all command line arguments and gives it back in a struct.
@@ -52,59 +52,59 @@ int main(int argc, char** argv)
     ParseCommandLineArguments(argc, argv, &arguments);
 
     // Set default values
-    char* newPrefixEnv = "new_dhcp6_ia_pd1_prefix1";
-    char* oldPrefixEnv = "old_dhcp6_ia_pd1_prefix1";
-    char* poolName;
+    char* new_prefix_env = "new_dhcp6_ia_pd1_prefix1";
+    char* old_prefix_env = "old_dhcp6_ia_pd1_prefix1";
+    char* pool_name;
     
-    if(arguments.newPrefixEnv != NULL)
+    if(arguments.new_prefix_env != NULL)
     {
-        newPrefixEnv = arguments.newPrefixEnv;
+        new_prefix_env = arguments.new_prefix_env;
     }
-    if(arguments.oldPrefixEnv != NULL)
+    if(arguments.old_prefix_env != NULL)
     {
-        oldPrefixEnv = arguments.oldPrefixEnv;
+        old_prefix_env = arguments.old_prefix_env;
     }
-    if(arguments.poolName != NULL)
+    if(arguments.pool_name != NULL)
     {
-        poolName = arguments.poolName;
+        pool_name = arguments.pool_name;
     }
 
     // Get environment values
-    char* newPrefix = getEnvironmentValue(newPrefixEnv);
-    char* oldPrefix = getEnvironmentValue(oldPrefixEnv);
+    char* new_prefix = GetEnvironmentValue(new_prefix_env);
+    char* old_prefix = GetEnvironmentValue(old_prefix_env);
     
     // 20kB of space in memory to compose a message
     // A place in memory where the diagnostic message can be stored
-    char betweenMessage[4096] = {0};
-    char diagnosticMessage[16384] = {0};
+    char between_message[4096] = {0};
+    char diagnostic_message[16384] = {0};
 
     // Check if a new prefix is defined
-    if(newPrefix != NULL)
+    if(new_prefix != NULL)
     {
         // Check whether only a new prefix is defined or the new prefix is different from the old prefix
-        if(oldPrefix == NULL || strcmp(newPrefix, oldPrefix))
+        if(old_prefix == NULL || strcmp(new_prefix, old_prefix))
         {
             // They are different, add to dianogstic message
-            if(oldPrefix != NULL)
+            if(old_prefix != NULL)
             {
-                sprintf(betweenMessage, "oldPrefix: %s\n", oldPrefix);
-                strcat(diagnosticMessage, betweenMessage);
+                sprintf(between_message, "old_prefix: %s\n", old_prefix);
+                strcat(diagnostic_message, between_message);
             }
-            sprintf(betweenMessage, "newPrefix: %s\n", newPrefix);
-            strcat(diagnosticMessage, betweenMessage);
+            sprintf(between_message, "new_prefix: %s\n", new_prefix);
+            strcat(diagnostic_message, between_message);
 
             // Initialize vici library
             vici_init();
 
-            // Create addressPool, length old string + "/120" + 0 at the end
-            char* addressPool = malloc(sizeof(char) * (strlen(newPrefix) + 4 + 1));
-            strcpy(addressPool, newPrefix);
-            strcat(addressPool, "/120");
+            // Create address_pool, length old string + "/120" + 0 at the end
+            char* address_pool = malloc(sizeof(char) * (strlen(new_prefix) + 4 + 1));
+            strcpy(address_pool, new_prefix);
+            strcat(address_pool, "/120");
 
-            sprintf(betweenMessage, "addressPool: %s\n", addressPool);
-            strcat(diagnosticMessage, betweenMessage);
+            sprintf(between_message, "address_pool: %s\n", address_pool);
+            strcat(diagnostic_message, between_message);
 
-            vici_req_t* messageToSend = createMessage(poolName, addressPool);
+            vici_req_t* message_to_send = CreateMessage(pool_name, address_pool);
             
             // Open connection, assume the system is the standard connection
             vici_conn_t* connection = vici_connect(NULL); 
@@ -112,17 +112,17 @@ int main(int argc, char** argv)
             if(connection != NULL)
             {
                 // Connection has been made, forward message
-                vici_res_t* response = vici_submit(messageToSend, connection);
+                vici_res_t* response = vici_submit(message_to_send, connection);
 
                 // Check if the message has been sent correctly
                 if(response == NULL)
                 {
-                    sprintf(betweenMessage, "Status: Unable to send the message: %s\n", strerror(errno));
-                    strcat(diagnosticMessage, betweenMessage);
+                    sprintf(between_message, "Status: Unable to send the message: %s\n", strerror(errno));
+                    strcat(diagnostic_message, between_message);
                 }
                 else
                 {
-                    /*// Check if the addressPool is actually added
+                    /*// Check if the address_pool is actually added
                     vici_parse_t contect = vici_parse(response); // should return VICI_PARSE_BEGIN_SECTION
                     contect = vici_parse(response); // should return VICI_PARSE_KEY_VALUE
                     if(contect == VICI_PARSE_KEY_VALUE)
@@ -132,14 +132,14 @@ int main(int argc, char** argv)
                     else
                     {
                         // message looks different than expected
-                        sprintf(betweenMessage, "Different response than expected");
-                        strcat(diagnosticMessage, betweenMessage);
+                        sprintf(between_message, "Different response than expected");
+                        strcat(diagnostic_message, between_message);
                     }
                     */
 
                     // Add to dianogstic message
-                    sprintf(betweenMessage, "Received message: \n%s\n", (char*)response); 
-                    strcat(diagnosticMessage, betweenMessage);
+                    sprintf(between_message, "Received message: \n%s\n", (char*)response); 
+                    strcat(diagnostic_message, between_message);
                 }
 
                 vici_disconnect(connection);
@@ -147,42 +147,42 @@ int main(int argc, char** argv)
             else
             {
                 // Add to dianogstic message
-                sprintf(betweenMessage, "Status: Connection failed: %s\n", strerror(errno));
-                strcat(diagnosticMessage, betweenMessage);
+                sprintf(between_message, "Status: Connection failed: %s\n", strerror(errno));
+                strcat(diagnostic_message, between_message);
             }
         }
         else
         {
-            strcat(diagnosticMessage, "Status: Addresses are the same\n");
+            strcat(diagnostic_message, "Status: Addresses are the same\n");
         }
     }
     else
     {
         // No new prefix is defined
-        strcat(diagnosticMessage, "Status: No environment variable for new prefix");
+        strcat(diagnostic_message, "Status: No environment variable for new prefix");
     }
 
-    puts(diagnosticMessage);
+    puts(diagnostic_message);
     return 0;
 }
 
-static char* getEnvironmentValue(const char* value)
+static char* GetEnvironmentValue(const char* value)
 {
-    char* readValue = NULL;
+    char* read_value = NULL;
     // It cannot be guaranteed that the content of the pointer will remain the same on a subsequent getenv call, so make a copy
-    char* environmentValue = getenv(value); 
+    char* environment_value = getenv(value); 
 
-    if(environmentValue != NULL)
+    if(environment_value != NULL)
     {
-        size_t lengte = strlen(environmentValue);
-        readValue = malloc(lengte + 1);
-        strcpy(readValue, environmentValue);
+        size_t lengte = strlen(environment_value);
+        read_value = malloc(lengte + 1);
+        strcpy(read_value, environment_value);
     }
 
-    return readValue;
+    return read_value;
 }
 
-static vici_req_t* createMessage(char* poolName, char* addressPool)
+static vici_req_t* CreateMessage(char* pool_name, char* address_pool)
 {
     /*
     <pool name> = {
@@ -192,8 +192,8 @@ static vici_req_t* createMessage(char* poolName, char* addressPool)
     */
 
     vici_req_t* message = vici_begin("load-pool");
-    vici_begin_section(message, poolName);
-    vici_add_key_value(message, "addrs", addressPool, (int)strlen(addressPool));
+    vici_begin_section(message, pool_name);
+    vici_add_key_value(message, "addrs", address_pool, (int)strlen(address_pool));
     vici_end_section(message);
 
     return message;
@@ -203,9 +203,9 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
 {
     int opt;
     opterr = 0; // no error message by getopt
-    arguments->poolName = NULL;
-    arguments->newPrefixEnv = NULL;
-    arguments->oldPrefixEnv = NULL;
+    arguments->pool_name = NULL;
+    arguments->new_prefix_env = NULL;
+    arguments->old_prefix_env = NULL;
 
     while((opt = getopt(argc, argv, ":p:n:o:h")) != -1)
     {
@@ -216,13 +216,13 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
             exit(1);
             break;
         case 'p': // Pool name
-            arguments->poolName = optarg;
+            arguments->pool_name = optarg;
             break;
         case 'n':
-            arguments->newPrefixEnv = optarg;
+            arguments->new_prefix_env = optarg;
             break;
         case 'o':
-            arguments->oldPrefixEnv = optarg;
+            arguments->old_prefix_env = optarg;
             break;
         case ':':
             puts("All options require arguments");
@@ -236,7 +236,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
     }
 
     // Check whether a pool name is defined
-    if(arguments->poolName == NULL)
+    if(arguments->pool_name == NULL)
     {
         // No pool name was defined
 
