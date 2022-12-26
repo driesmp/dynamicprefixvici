@@ -120,7 +120,6 @@ static vici_req_t* CreateMessage(char* pool_name, char* address_pool)
         <Attrite type>* = ...
     }
     */
-
     vici_req_t* message = vici_begin("load-pool");
     vici_begin_section(message, pool_name);
     vici_add_key_value(message, "addrs", address_pool, (int)strlen(address_pool));
@@ -165,7 +164,6 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
     if(arguments->pool_name == NULL && arguments->prefix == NULL)
     {
         // No pool name or prefix was defined
-
         puts("Pool name and prefix are required, see -h for usage");
         exit(1);
     }
@@ -174,7 +172,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
 static void Usage()
 {
     printf("usage: dynamicprefixvici [-h] -p prefix -n poolName\n"
-           "-h help message\n"
-           "-p PrefixName: set the new prefix\n"
-           "-n poolName: pool name added to strongSwan\n");
+           "-h displays the help message\n"
+           "-p prefix: sets the prefix to add\n"
+           "-n poolName: sets the pool name to add\n");
 }
