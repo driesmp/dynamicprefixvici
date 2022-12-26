@@ -8,7 +8,7 @@
 typedef struct CommandLineArguments
 {
     char* pool_name;
-    char* new_prefix;
+    char* prefix;
 } CommandLineArguments;
 
 /**
@@ -47,15 +47,15 @@ int main(int argc, char** argv)
     char diagnostic_message[16384] = {0};
 
     // Add new prefix to diagnostic message
-    sprintf(between_message, "new_prefix: %s\n", arguments.new_prefix);
+    sprintf(between_message, "prefix: %s\n", arguments.prefix);
     strcat(diagnostic_message, between_message);
 
     // Initialize vici library
     vici_init();
 
     // Create address_pool, length old string + "/120" + 0 at the end
-    char* address_pool = malloc(sizeof(char) * (strlen(arguments.new_prefix) + 4 + 1));
-    strcpy(address_pool, arguments.new_prefix);
+    char* address_pool = malloc(sizeof(char) * (strlen(arguments.prefix) + 4 + 1));
+    strcpy(address_pool, arguments.prefix);
     strcat(address_pool, "/120");
 
     sprintf(between_message, "address_pool: %s\n", address_pool);
@@ -134,7 +134,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
     int opt;
     opterr = 0; // no error message by getopt
     arguments->pool_name = NULL;
-    arguments->new_prefix = NULL;
+    arguments->prefix = NULL;
 
     while((opt = getopt(argc, argv, ":p:n:h")) != -1)
     {
@@ -144,11 +144,11 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
             Usage();
             exit(1);
             break;
-        case 'p': // Pool name
+        case 'n': // Pool name
             arguments->pool_name = optarg;
             break;
-        case 'n':
-            arguments->new_prefix = optarg;
+        case 'p':
+            arguments->prefix = optarg;
             break;
         case ':':
             puts("All options require arguments");
@@ -162,7 +162,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
     }
 
     // Check whether a pool name and a prefix is defined
-    if(arguments->pool_name == NULL && arguments->new_prefix == NULL)
+    if(arguments->pool_name == NULL && arguments->prefix == NULL)
     {
         // No pool name or prefix was defined
 
@@ -173,8 +173,8 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
 
 static void Usage()
 {
-    printf("usage: dynamicprefixvici [-h] [-n newPrefixName] [-o oldPrefixName] -p poolName\n"
+    printf("usage: dynamicprefixvici [-h] -p prefix -n poolName\n"
            "-h help message\n"
-           "-n newPrefixName: set the new prefix\n"
-           "-p poolName: pool name added to strongSwan\n");
+           "-p PrefixName: set the new prefix\n"
+           "-n poolName: pool name added to strongSwan\n");
 }
