@@ -171,8 +171,8 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
 
 static void Usage()
 {
-    printf("usage: dynamicprefixvici [-h] -p prefix -n poolName\n"
-           "-h displays the help message\n"
-           "-p prefix: sets the prefix to add\n"
-           "-n poolName: sets the pool name to add\n");
+    printf("usage: dynamicprefixvici [-h] -n poolName -p prefix \n"
+            "-h displays the usage message\n"
+            "-n poolName: sets the pool name to add\n")
+            "-p prefix: sets the prefix to add\n";
 }
