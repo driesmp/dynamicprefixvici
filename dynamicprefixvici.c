@@ -170,6 +170,6 @@ static void Usage()
 {
     printf("usage: dynamicprefixvici [-h] -n poolName -p prefix \n"
             "-h displays the usage message\n"
-            "-n poolName: sets the pool name to add\n")
-            "-p prefix: sets the prefix to add\n";
+            "-n poolName: sets the pool name to add\n"
+            "-p prefix: sets the prefix to add\n");
 }
