@@ -142,7 +142,6 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
         case 'h': // Help
             Usage();
             exit(1);
-            break;
         case 'n': // Pool name
             arguments->pool_name = optarg;
             break;
@@ -152,11 +151,9 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
         case ':':
             puts("All options require arguments");
             exit(1);
-            break;
         case '?':
             puts("Unrecognized argument");
             exit(1);
-            break;
         }
     }
 
