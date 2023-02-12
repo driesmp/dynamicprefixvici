@@ -53,35 +53,31 @@ static void Usage();
  * @param optionname 
  * @return int 
  */
-static int parse_option_to_integer(char* value, char* optionname);
+static int ParseOptionToInteger(char* value, char* optionname);
 
 /**
  * @brief Checks whether the string only contains the character specified
  * Returns true if the string only contains the characters
  * @param string 
  * @param characters 
- * @return true 
- * @return false 
+ * @return bool
  */
-static bool check_only_contains(char* string, char* characters);
+static bool CheckOnlyContains(char* string, char* characters);
 
 /**
  * @brief Check whether something is a valid IPv6 address
  * 
  * @param adres 
- * @return true 
- * @return false 
+ * @return bool
  */
-static bool check_adres(char* adres);
+static bool CheckAddress(char* address);
 
 /**
- * @brief Checks wheters de input arguments are all valid
+ * @brief Checks wheter the input arguments are all valid exits if invalid
  * 
  * @param argumenten 
- * @return true 
- * @return false 
  */
-static bool check_validity_of_arguments(CommandLineArguments* argumenten);
+static void CheckValidityOfArguments(CommandLineArguments* argumenten);
 
 /**
  * @brief Formats the output adress to be given to vici
@@ -89,7 +85,7 @@ static bool check_validity_of_arguments(CommandLineArguments* argumenten);
  * @param argumenten 
  * @param output 
  */
-void format_output(CommandLineArguments* argumenten, char* output);
+void FormatOutput(CommandLineArguments* arguments, char* output);
 
 
 int main(int argc, char** argv)
@@ -97,12 +93,8 @@ int main(int argc, char** argv)
     // Parse command line arguments
     CommandLineArguments arguments;
     ParseCommandLineArguments(argc, argv, &arguments);
-    if(!check_validity_of_arguments(&arguments))
-    {
-        // Arguments invalid error message already printed
-        exit(1);
-    }
-
+    CheckValidityOfArguments(&arguments); // Can exit here
+    
     // 20kB of space in memory to compose a message
     // A place in memory where the diagnostic message can be stored
     char between_message[4096] = {0};
@@ -117,7 +109,7 @@ int main(int argc, char** argv)
 
     // Create address_pool to be sent
     char address_pool[50] = {0};
-    format_output(&arguments, address_pool);
+    FormatOutput(&arguments, address_pool);
     
     sprintf(between_message, "address_pool: %s\n", address_pool);
     strcat(diagnostic_message, between_message);
@@ -214,16 +206,16 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
             arguments->prefix_address = optarg;
             break;
         case 'l': // Prefix size from provider
-            arguments->prefix_size = parse_option_to_integer(optarg, "Prefix_size");
+            arguments->prefix_size = ParseOptionToInteger(optarg, "prefix_size");
             break;
         case 's': // Pool size suffix for vici
-            arguments->pool_size = parse_option_to_integer(optarg, "pool_size");
+            arguments->pool_size = ParseOptionToInteger(optarg, "pool_size");
             break;
         case 'i': // Sla_id
-            arguments->sla_id = parse_option_to_integer(optarg, "Sla_id");
+            arguments->sla_id = ParseOptionToInteger(optarg, "Sla_id");
             break;
         case 'j':
-            arguments->sla_size = parse_option_to_integer(optarg, "sla_size");
+            arguments->sla_size = ParseOptionToInteger(optarg, "sla_size");
             break;
         case ':':
             puts("All options require arguments");
@@ -260,15 +252,15 @@ static void Usage()
 {
     printf("usage: dynamicprefixvici [-h] -n poolName -p prefix_address \n"
             "-h displays the usage message\n"
-            "-n poolName: sets the pool name to add\n"
+            "-n pool_name: sets the pool name to add\n"
             "-p prefix_address: sets the prefix_address to add\n"
             "-s pool_size: size of the pool (/120) as decimal integer\n"
-            "-l prefix_size: size of the prefix provided fromt the provider as decimal integer\n"
+            "-l prefix_size: size of the prefix provided from the provider as decimal integer\n"
             "-i sla_id: Sla_id to be appenden as decimal integer\n"
             "-j sla_size: Size of the sla_id as decimal integer\n");
 }
 
-static int parse_option_to_integer(char* value, char* optionname)
+static int ParseOptionToInteger(char* value, char* optionname)
 {
     if(isdigit(value[0]))
     {
@@ -281,7 +273,7 @@ static int parse_option_to_integer(char* value, char* optionname)
     }
 }
 
-static bool check_only_contains(char* string, char* characters)
+static bool CheckOnlyContains(char* string, char* characters)
 {
     bool result = true;
 
@@ -318,13 +310,13 @@ static bool check_only_contains(char* string, char* characters)
     return result;
 }
 
-static bool check_adres(char* adres)
+static bool CheckAddress(char* adres)
 {
-    // The adres may only contain 0 to 9 and A to F or a to f and :. 
+    // The address may only contain 0 to 9 and A to F or a to f and :. 
     // We expect it to be full length
     // The length should be 21 characters
     if(    strlen(adres) == 21 
-        && check_only_contains(adres, "0123456789abcdefABCDEF:"))
+        && CheckOnlyContains(adres, "0123456789abcdefABCDEF:"))
     {
         return true;
     }
@@ -334,32 +326,32 @@ static bool check_adres(char* adres)
     }
 }
 
-static bool check_validity_of_arguments(CommandLineArguments* argumenten)
+static void CheckValidityOfArguments(CommandLineArguments* arguments)
 {
     bool validity = false;
     
     // Check prefix_size
-    if(argumenten->prefix_size >= 64)
+    if(arguments->prefix_size >= 64)
     {
         puts("Prefixsize has to be smaller than 64");
     }
-    else if(argumenten->pool_size < 97)
+    else if(arguments->pool_size < 97)
     {
         puts("Poolsize has to be larger than 96");
     }
-    else if(!check_adres(argumenten->prefix_address))
+    else if(!CheckAddress(arguments->prefix_address))
     {
-        // Adres is invalid
+        // Address is invalid
         puts("Invalid adres");
     }
-    else if(argumenten->sla_size > (64- argumenten->prefix_size))
+    else if(arguments->sla_size > (64- arguments->prefix_size))
     {
-        printf("Slasize: %i \n prefix_size: %i\n", argumenten->sla_size, argumenten->prefix_size);
+        printf("Slasize: %i \n prefix_size: %i\n", arguments->sla_size, arguments->prefix_size);
         puts("Slasize is larger than prefix allows");
     }
-    else if((int)log2(argumenten->sla_id) > argumenten->sla_size) // log2 gives the amount of binary numbers back apperantly; can be done in a different way be it looks interesting
+    else if((int)log2(arguments->sla_id) > arguments->sla_size) // log2 gives the amount of binary numbers back apparently; can be done in a different way but it looks interesting
     {
-        puts("Slaid is larger tha sla_size allows");
+        puts("sla_id is larger tha sla_size allows");
     }
     else
     {
@@ -367,13 +359,19 @@ static bool check_validity_of_arguments(CommandLineArguments* argumenten)
         validity = true;
     }
 
+    // Exit if false
+    if(validity == false)
+    {
+        exit(1);
+    }
+
     return validity;
 }
 
-void format_output(CommandLineArguments* argumenten, char* output)
+void FormatOutput(CommandLineArguments* arguments, char* output)
 {
     //char output[50] = {0}; // More than long enough
-    strcpy(output, argumenten->prefix_address);
+    strcpy(output, arguments->prefix_address);
 
     // Things happen in the last 4 characters before ::
     char* last_characters = &output[15]; // the last 4 characters start at the 15th character; Can be done in a better way but this was the easiest
@@ -383,12 +381,12 @@ void format_output(CommandLineArguments* argumenten, char* output)
     // Clear the amount of bits specified by the sla length
     // Create a bitmask
     uint16_t bitmask = 0b1111111111111111; // We could also use 0xff (GCC does not support delimeters ' as specified in c2x)
-    bitmask = bitmask << argumenten->sla_size; // Shift left 0 is appended (C support shifting but not rotation, not necessairy here but a shame (One of the few flaws of C, Sometimes assembly remains necessairy (ROR, ROL)))
+    bitmask = bitmask << arguments->sla_size; // Shift left 0 is appended
 
     sla &= bitmask; // Logical AND
 
-    // The suffix clear, now we kan append the id
-    sla |= argumenten->sla_id;
+    // The suffix clear, now we can append the id
+    sla |= arguments->sla_id;
 
     // Now we can convert it back into a hexadecimal string
     char suffix[15] = {0};
@@ -406,7 +404,7 @@ void format_output(CommandLineArguments* argumenten, char* output)
     suffix[4] = ':'; 
     suffix[5] = ':';
     suffix[6] = '/';
-    sprintf(&suffix[7], "%u", argumenten->pool_size);
+    sprintf(&suffix[7], "%u", arguments->pool_size);
 
     // Now the suffix can be placed back in the result
     strcpy(&output[15], suffix);
