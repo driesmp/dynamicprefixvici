@@ -67,7 +67,7 @@ static bool CheckOnlyContains(char* string, char* characters);
 /**
  * @brief Check whether something is a valid IPv6 address
  * 
- * @param adres 
+ * @param address 
  * @return bool
  */
 static bool CheckAddress(char* address);
@@ -310,13 +310,13 @@ static bool CheckOnlyContains(char* string, char* characters)
     return result;
 }
 
-static bool CheckAddress(char* adres)
+static bool CheckAddress(char* address)
 {
     // The address may only contain 0 to 9 and A to F or a to f and :. 
     // We expect it to be full length
     // The length should be 21 characters
-    if(    strlen(adres) == 21 
-        && CheckOnlyContains(adres, "0123456789abcdefABCDEF:"))
+    if(    strlen(address) == 21 
+        && CheckOnlyContains(address, "0123456789abcdefABCDEF:"))
     {
         return true;
     }
@@ -342,7 +342,7 @@ static void CheckValidityOfArguments(CommandLineArguments* arguments)
     else if(!CheckAddress(arguments->prefix_address))
     {
         // Address is invalid
-        puts("Invalid adres");
+        puts("Invalid address");
     }
     else if(arguments->sla_size > (64- arguments->prefix_size))
     {
