@@ -79,24 +79,17 @@ int main(int argc, char** argv)
         }
         else
         {
-            /*// Check if the address_pool is actually added
-            vici_parse_t contect = vici_parse(response); // should return VICI_PARSE_BEGIN_SECTION
-            contect = vici_parse(response); // should return VICI_PARSE_KEY_VALUE
-            if(contect == VICI_PARSE_KEY_VALUE)
-            {
-                printf("%s\n", vici_parse_value_str(response));
-            }
-            else
-            {
-                // message looks different than expected
-                sprintf(between_message, "Different response than expected");
-                strcat(diagnostic_message, between_message);
-            }
-            */
+            // Print the response message to a file which can than be examined
+            char* temp_file_name = tmpnam(NULL);
+            FILE* the_file = fopen(temp_file_name, "w");
 
+            vici_dump(response, "received message", 0 /*Pretty?*/, the_file);
+
+            fclose(the_file);
             // Add to dianogstic message
-            sprintf(between_message, "Received message: \n%s\n", (char*)response);
+            sprintf(between_message, "Received message: \n%s\n", temp_file_name);
             strcat(diagnostic_message, between_message);
+
         }
 
         vici_disconnect(connection);
