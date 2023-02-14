@@ -364,8 +364,6 @@ static void CheckValidityOfArguments(CommandLineArguments* arguments)
     {
         exit(1);
     }
-
-    return validity;
 }
 
 void FormatOutput(CommandLineArguments* arguments, char* output)
