@@ -250,14 +250,14 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
 
 static void Usage()
 {
-    printf("usage: dynamicprefixvici [-h] -n poolName -p prefix_address \n"
+    printf("usage: dynamicprefixvici [-h] -n pool_name -p prefix_address [-s pool_size] [-l prefix_size] [-i sla_id] [-j sla_size]\n"
             "-h displays the usage message\n"
             "-n pool_name: sets the pool name to add\n"
             "-p prefix_address: sets the prefix_address to add\n"
             "-s pool_size: size of the pool (/120) as decimal integer\n"
             "-l prefix_size: size of the prefix provided from the provider as decimal integer\n"
-            "-i sla_id: Sla_id to be appenden as decimal integer\n"
-            "-j sla_size: Size of the sla_id as decimal integer\n");
+            "-i sla_id: sla_id to be appended as decimal integer\n"
+            "-j sla_size: size of the sla_id as decimal integer\n");
 }
 
 static int ParseOptionToInteger(char* value, char* optionname)
