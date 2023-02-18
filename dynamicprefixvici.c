@@ -232,7 +232,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
        || arguments->pool_size == 0)
     {
         // No pool name or prefix_address was defined
-        puts("Pool name and prefix_address are required, see -h for usage");
+        puts("pool_name and prefix_address are required, see -h for usage");
         exit(1);
     }
 
