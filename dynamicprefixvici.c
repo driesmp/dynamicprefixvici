@@ -180,7 +180,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
     opterr = 0; // no error message by getopt
     arguments->pool_name = NULL;
     arguments->prefix_address = NULL;
-    arguments->pool_size = 0;
+    arguments->pool_size = 97;
     arguments->prefix_size = 0;
     arguments->sla_id = 0;
     arguments->sla_size = 0;
@@ -221,8 +221,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
 
     // Check whether a pool name and a prefix_address is defined
     if(   arguments->pool_name == NULL 
-       || arguments->prefix_address == NULL
-       || arguments->pool_size == 0)
+       || arguments->prefix_address == NULL)
     {
         // No pool name or prefix_address was defined
         puts("pool_name and prefix_address are required, see -h for usage");
