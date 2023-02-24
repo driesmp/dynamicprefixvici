@@ -191,47 +191,45 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
     {
         switch (opt)
         {
-        case 'h': // Help
+        case 'h':
             Usage();
             exit(1);
-        case 'n': // Pool name
+        case 'n':
             arguments->pool_name = optarg;
             break;
-        case 'p': // Prefix adress
+        case 'p':
             arguments->prefix_address = optarg;
             break;
-        case 'l': // Prefix size from provider
+        case 'l':
             arguments->prefix_size = ParseOptionToInteger(optarg, "prefix_size");
             break;
-        case 's': // Pool size suffix for vici
+        case 's':
             arguments->pool_size = ParseOptionToInteger(optarg, "pool_size");
             break;
-        case 'i': // Sla_id
-            arguments->sla_id = ParseOptionToInteger(optarg, "Sla_id");
+        case 'i':
+            arguments->sla_id = ParseOptionToInteger(optarg, "sla_id");
             break;
         case 'j':
             arguments->sla_size = ParseOptionToInteger(optarg, "sla_size");
             break;
         case ':':
             puts("All options require arguments");
-            exit(1);
+            exit(1)
         case '?':
             puts("Unrecognized argument");
             exit(1);
         }
     }
 
-    // Check whether a pool name and a prefix_address is defined
-    if(   arguments->pool_name == NULL 
-       || arguments->prefix_address == NULL)
+    // Check whether a pool_name and a prefix_address are defined
+    if(arguments->pool_name == NULL || arguments->prefix_address == NULL)
     {
-        // No pool name or prefix_address was defined
         puts("pool_name and prefix_address are required, see -h for usage");
         exit(1);
     }
 
     // If a provider prefix is provided or a slaid or a slasize, they to be all present
-    // Sla_id may be zero
+    // sla_id may be zero
     if(arguments->sla_size != 0  || arguments->prefix_size != 0)
     {
         if(arguments->sla_size == 0 && arguments->prefix_size == 0)
@@ -248,7 +246,7 @@ static void Usage()
             "-h displays the usage message\n"
             "-n pool_name: sets the pool name to add\n"
             "-p prefix_address: sets the prefix_address to add\n"
-            "-s pool_size: size of the pool (/120) as decimal integer\n"
+            "-s pool_size: size of the pool to add as decimal integer\n"
             "-l prefix_size: size of the prefix provided from the provider as decimal integer\n"
             "-i sla_id: sla_id to be appended as decimal integer\n"
             "-j sla_size: size of the sla_id as decimal integer\n");
@@ -300,7 +298,6 @@ static bool CheckOnlyContains(char* string, char* characters)
     }
 
     // If no unspecified character is found, result stays true
-
     return result;
 }
 
