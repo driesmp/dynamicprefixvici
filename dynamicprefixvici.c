@@ -324,11 +324,11 @@ static void CheckValidityOfArguments(CommandLineArguments* arguments)
     // Check prefix_size
     if(arguments->prefix_size >= 64)
     {
-        puts("Prefixsize has to be smaller than 64");
+        puts("prefix_size has to be smaller than 64");
     }
     else if(arguments->pool_size < 97)
     {
-        puts("Poolsize has to be larger than 96");
+        puts("pool_size has to be larger than 96");
     }
     else if(!CheckAddress(arguments->prefix_address))
     {
@@ -337,8 +337,8 @@ static void CheckValidityOfArguments(CommandLineArguments* arguments)
     }
     else if(arguments->sla_size > (64- arguments->prefix_size))
     {
-        printf("Slasize: %i \n prefix_size: %i\n", arguments->sla_size, arguments->prefix_size);
-        puts("Slasize is larger than prefix allows");
+        printf("sla_size: %i \n prefix_size: %i\n", arguments->sla_size, arguments->prefix_size);
+        puts("sla_size is larger than prefix allows");
     }
     else if((int)log2(arguments->sla_id) > arguments->sla_size) // log2 gives the amount of binary numbers back apparently; can be done in a different way but it looks interesting
     {
