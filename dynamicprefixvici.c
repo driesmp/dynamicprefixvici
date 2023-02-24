@@ -214,7 +214,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
             break;
         case ':':
             puts("All options require arguments");
-            exit(1)
+            exit(1);
         case '?':
             puts("Unrecognized argument");
             exit(1);
