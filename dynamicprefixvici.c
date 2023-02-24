@@ -132,17 +132,19 @@ int main(int argc, char** argv)
         }
         else
         {
-            // Print the response message to a file which can than be examined
-            char* temp_file_name = tmpnam(NULL);
-            FILE* the_file = fopen(temp_file_name, "w");
+            char* parsed_message;
+            if(vici_parse(response) == VICI_PARSE_KEY_VALUE)
+            {
+                parsed_message = vici_parse_value_str(response);
+            }
+            else
+            {
+                // Unable to parse other than file
+                parsed_message = "ERROR: Unable to parse";
+            }
 
-            vici_dump(response, "received message", 0 /*Pretty?*/, the_file);
-
-            fclose(the_file);
-            // Add to dianogstic message
-            sprintf(between_message, "Received message: \n%s\n", temp_file_name);
+            sprintf(between_message, "Received message: %s\n", parsed_message);
             strcat(diagnostic_message, between_message);
-
         }
 
         vici_disconnect(connection);
