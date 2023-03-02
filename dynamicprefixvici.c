@@ -48,7 +48,7 @@ static void Usage();
 
 int main(int argc, char** argv)
 {
-    // parse command line arguments
+    // Parse command line arguments
     CommandLineArguments arguments;
     ParseCommandLineArguments(argc, argv, &arguments);
 
@@ -86,8 +86,6 @@ int main(int argc, char** argv)
                 // Let the program exit with 1 if vici was unable to add the pool
                 if(parsed_message[0] != 'y')
                 {
-                    error_encountered = true;
-
                     // Parse the error message from Vici
                     parsed_message = vici_parse_value_str(response);
                     puts(parsed_message);
