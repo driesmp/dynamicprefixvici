@@ -190,7 +190,7 @@ static void Usage()
 
 void FormatOutput(CommandLineArguments* arguments, char* output)
 {
-    // Append the pool size to the adress
+    // Append the pool size to the address
     strcpy(output, arguments->prefix_address);
 
     size_t length_string = strlen(output);
