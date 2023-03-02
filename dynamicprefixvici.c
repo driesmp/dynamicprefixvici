@@ -53,6 +53,9 @@ void FormatOutput(CommandLineArguments* arguments, char* output);
 
 int main(int argc, char** argv)
 {
+    // For diagnostic reasons
+    bool error_encountered = false;
+
     // Parse command line arguments
     CommandLineArguments arguments;
     ParseCommandLineArguments(argc, argv, &arguments);
@@ -98,6 +101,12 @@ int main(int argc, char** argv)
             if(vici_parse(response) == VICI_PARSE_KEY_VALUE)
             {
                 parsed_message = vici_parse_value_str(response);
+
+                // Let the program exit with 1 if vici was unable to add the pool
+                if(parsed_message[0] != 'y')
+                {
+                    error_encountered = true;
+                }
             }
             else
             {
@@ -116,10 +125,21 @@ int main(int argc, char** argv)
         // Add to dianogstic message
         sprintf(between_message, "Status: Connection failed: %s\n", strerror(errno));
         strcat(diagnostic_message, between_message);
+
+        // Let the program exit with 1 no connection could be made
+        error_encountered = true;
     }
 
     puts(diagnostic_message);
-    return 0;
+    
+    if(error_encountered)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 static vici_req_t* CreateMessage(char* pool_name, char* address_pool)
