@@ -28,6 +28,14 @@ typedef struct CommandLineArguments
 static vici_req_t* CreateMessage(char* pool_name, char* address_pool);
 
 /**
+ * @brief Formats the output address to be given to vici
+ * 
+ * @param arguments 
+ * @param output 
+ */
+static void FormatOutput(CommandLineArguments* arguments, char* output);
+
+/**
  * @brief get all command line arguments and gives it back in a struct.
  * If unsupported arguments are given, it terminates the program
  *
@@ -41,14 +49,6 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
  * @brief prints the usage of the program
  */
 static void Usage();
-
-/**
- * @brief Formats the output address to be given to vici
- * 
- * @param arguments 
- * @param output 
- */
-static void FormatOutput(CommandLineArguments* arguments, char* output);
 
 
 int main(int argc, char** argv)
@@ -152,6 +152,16 @@ static vici_req_t* CreateMessage(char* pool_name, char* address_pool)
     return message;
 }
 
+static void FormatOutput(CommandLineArguments* arguments, char* output)
+{
+    // Append the pool size to the address
+    strcpy(output, arguments->prefix_address);
+
+    size_t length_string = strlen(output);
+    sprintf(&output[length_string], "/%s", arguments->pool_size);
+
+}
+
 static void ParseCommandLineArguments(int argc, char** argv, CommandLineArguments* arguments)
 {
     int opt;
@@ -200,14 +210,4 @@ static void Usage()
             "-n pool_name: sets the pool name to add\n"
             "-p prefix_address: sets the prefix_address to add\n"
             "-s pool_size: size of the pool to add as decimal integer\n");
-}
-
-static void FormatOutput(CommandLineArguments* arguments, char* output)
-{
-    // Append the pool size to the address
-    strcpy(output, arguments->prefix_address);
-
-    size_t length_string = strlen(output);
-    sprintf(&output[length_string], "/%s", arguments->pool_size);
-
 }
