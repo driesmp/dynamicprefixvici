@@ -48,7 +48,7 @@ static void Usage();
  * @param arguments 
  * @param output 
  */
-void FormatOutput(CommandLineArguments* arguments, char* output);
+static void FormatOutput(CommandLineArguments* arguments, char* output);
 
 
 int main(int argc, char** argv)
