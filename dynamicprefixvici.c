@@ -154,7 +154,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
     opterr = 0; // no error message by getopt
     arguments->pool_name = NULL;
     arguments->prefix_address = NULL;
-    arguments->pool_size = "97"; // this is the largest strongSwan can handle
+    arguments->pool_size = "97"; // default chosen as the largest size strongSwan will add
 
     while((opt = getopt(argc, argv, ":p:n:s:h")) != -1)
     {
