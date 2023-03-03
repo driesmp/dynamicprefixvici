@@ -140,7 +140,6 @@ static void FormatOutput(CommandLineArguments* arguments, char* output)
 
     size_t length_string = strlen(output);
     sprintf(&output[length_string], "/%s", arguments->pool_size);
-
 }
 
 static void ParseCommandLineArguments(int argc, char** argv, CommandLineArguments* arguments)
