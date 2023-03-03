@@ -188,7 +188,7 @@ static void Usage()
             "-s pool_size: size of the pool to add as decimal integer\n");
 }
 
-void FormatOutput(CommandLineArguments* arguments, char* output)
+static void FormatOutput(CommandLineArguments* arguments, char* output)
 {
     // Append the pool size to the address
     strcpy(output, arguments->prefix_address);
