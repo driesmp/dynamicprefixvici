@@ -43,9 +43,9 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
 static void Usage();
 
 /**
- * @brief Formats the output adress to be given to vici
+ * @brief Formats the output address to be given to vici
  * 
- * @param argumenten 
+ * @param arguments 
  * @param output 
  */
 void FormatOutput(CommandLineArguments* arguments, char* output);
