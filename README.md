@@ -1,5 +1,5 @@
 # Building
-Before running build.sh, make sure strongswan is installed with the libvici.h.
+Before running build.sh, make sure libvici.h is present, typically shipped withh strongSwan.
 The following command should do the trick: *pkg install strongswan*
 
 
