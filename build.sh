@@ -1,4 +1,5 @@
 #!/bin/sh
-clang dynamicprefixvici.c /usr/local/lib/ipsec/libvici.so /usr/lib/libm.so \
-    -I/usr/local/include -I/usr/lib/include \
+clang dynamicprefixvici.c \
+    /usr/local/lib/ipsec/libvici.so \
+    -I/usr/local/include \
     -Ofast -march=native -odynamicprefixvici
