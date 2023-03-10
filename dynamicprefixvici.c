@@ -147,13 +147,13 @@ static vici_req_t* CreateMessage(char* pool_name, char* address_pool)
     return message;
 }
 
-static void FormatOutput(CommandLineArguments* arguments, char* output)
+static void FormatOutput(CommandLineArguments* arguments, char* address_pool)
 {
     // Append the pool size to the address
-    strcpy(output, arguments->prefix_address);
+    strcpy(address_pool, arguments->prefix_address);
 
     size_t length_string = strlen(output);
-    sprintf(&output[length_string], "/%s", arguments->pool_size);
+    sprintf(&address_pool[length_string], "/%s", arguments->pool_size);
 }
 
 static void ParseCommandLineArguments(int argc, char** argv, CommandLineArguments* arguments)
