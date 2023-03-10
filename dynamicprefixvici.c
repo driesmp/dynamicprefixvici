@@ -23,10 +23,10 @@ typedef struct CommandLineArguments
 static vici_req_t* CreateMessage(char* pool_name, char* address_pool);
 
 /**
- * @brief Formats the output address to be given to vici
+ * @brief Formats the address_pool to be given to vici
  * 
  * @param arguments 
- * @param output 
+ * @param address_pool 
  */
 static void FormatOutput(CommandLineArguments* arguments, char* address_pool);
 
