@@ -28,7 +28,7 @@ static vici_req_t* CreateMessage(char* pool_name, char* address_pool);
  * @param arguments 
  * @param output 
  */
-static void FormatOutput(CommandLineArguments* arguments, char* output);
+static void FormatOutput(CommandLineArguments* arguments, char* address_pool);
 
 /**
  * @brief get all command line arguments and gives it back in a struct.
