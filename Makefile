@@ -1,5 +1,5 @@
-PROG=   dynamicprefixvici
-SRC=    dynamicprefixvici.c
+PROG=	dynamicprefixvici
+SRC=	dynamicprefixvici.c
 
 CC?=			cc
 INSTALL?=		install
