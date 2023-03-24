@@ -1,5 +1,18 @@
+PROG=   dynamicprefixvici
+SRC=    dynamicprefixvici.c
+
+CC?=            cc
+INSTALL?=		install
+MAKE?=          make
+PREFIX?=        /usr/local
+
+CFLAGS?=        -Ofast -march=native
+INCLUDEDIR?=    ${PREFIX}/include
+INSTALLDIR?=    ${PREFIX}/sbin
+LIBS?=          ${PREFIX}/lib/ipsec/libvici.so
+
 build:
-	clang dynamicprefixvici.c /usr/local/lib/ipsec/libvici.so -I/usr/local/include -Ofast -march=native -odynamicprefixvici
+	${CC} ${SRC} ${LIBS} -I${INCLUDEDIR} ${CFLAGS} -o${PROG}
 
 install:
-	install -g wheel -o root -s dynamicprefixvici /usr/local/sbin
+	${INSTALL} -g wheel -o root -s ${PROG} ${INSTALLDIR}
