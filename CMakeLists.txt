@@ -8,7 +8,7 @@ add_compile_options(-Wall -Wextra -pedantic -march=native -std=gnu2x) #-Weveryth
 
 add_executable(updateip dynamicprefixvici.c)
 
-target_link_libraries(updateip /usr/local/lib/ipsec/libvici.so m)
+target_link_libraries(updateip /usr/local/lib/ipsec/libvici.so)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
