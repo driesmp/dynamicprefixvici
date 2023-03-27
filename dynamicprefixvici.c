@@ -20,7 +20,7 @@ typedef struct CommandLineArguments
  * @param address_pool The address pool
  * @return vici_req_t* The message to send
  */
-static vici_req_t* CreateMessage(char* pool_name, char* address_pool);
+static vici_req_t* CreateLoadPoolMessage(char* pool_name, char* address_pool);
 
 /**
  * @brief Formats the address_pool to be given to vici
@@ -74,7 +74,7 @@ int main(int argc, char** argv)
     sprintf(between_message, "address_pool: %s\n", address_pool);
     strcat(diagnostic_message, between_message);
 
-    vici_req_t* message_to_send = CreateMessage(arguments.pool_name, address_pool);
+    vici_req_t* load_pool_message = CreateLoadPoolMessage(arguments.pool_name, address_pool);
 
     // Open connection, assume the system is the standard connection
     vici_conn_t* connection = vici_connect(NULL);
@@ -82,7 +82,7 @@ int main(int argc, char** argv)
     if(connection != NULL)
     {
         // Connection has been made, forward message
-        vici_res_t* response = vici_submit(message_to_send, connection);
+        vici_res_t* response = vici_submit(load_pool_message, connection);
 
         // Check if the message has been sent correctly
         if(response == NULL)
@@ -131,7 +131,7 @@ int main(int argc, char** argv)
     return 0;
 }
 
-static vici_req_t* CreateMessage(char* pool_name, char* address_pool)
+static vici_req_t* CreateLoadPoolMessage(char* pool_name, char* address_pool)
 {
     /*
     <pool name> = {
