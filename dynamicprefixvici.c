@@ -52,9 +52,6 @@ int main(int argc, char** argv)
     CommandLineArguments arguments;
     ParseCommandLineArguments(argc, argv, &arguments);
 
-    // Add new prefix_address to diagnostic message
-    printf("prefix_address: %s\n", arguments.prefix_address);
-
     // Initialize vici library
     vici_init();
 
