@@ -74,7 +74,7 @@ int main(int argc, char** argv)
         // Check if the message has been sent correctly
         if(response == NULL)
         {
-            printf("Status: Unable to send the message: %s\n", strerror(errno));
+            printf("Unable to send the message: %s\n", strerror(errno));
         }
         else
         {
@@ -96,7 +96,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        printf("Status: Connection failed: %s\n", strerror(errno));
+        printf("Connection failed: %s\n", strerror(errno));
     }
 
     return 0;
