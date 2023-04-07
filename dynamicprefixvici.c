@@ -86,7 +86,7 @@ int main(int argc, char** argv)
             else
             {
                 // Unable to parse other than file
-                parsed_message = "ERROR: Unable to parse";
+                parsed_message = "ERROR: Unable to parse return message";
             }
 
             printf("Received message: %s\n", parsed_message);
