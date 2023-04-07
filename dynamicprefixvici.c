@@ -124,7 +124,7 @@ static void FormatOutput(CommandLineArguments* arguments, char* address_pool)
     strcpy(address_pool, arguments->prefix_address);
 
     size_t length_string = strlen(address_pool);
-    sprintf(&address_pool[length_string], "/%s", arguments->pool_size);
+    strcat(&address_pool[length_string], arguments->pool_size);
 }
 
 static void ParseCommandLineArguments(int argc, char** argv, CommandLineArguments* arguments)
