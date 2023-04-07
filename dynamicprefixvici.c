@@ -96,7 +96,6 @@ int main(int argc, char** argv)
     }
     else
     {
-        // Add to dianogstic message
         printf("Status: Connection failed: %s\n", strerror(errno));
     }
 
