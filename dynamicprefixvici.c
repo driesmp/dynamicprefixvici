@@ -9,8 +9,8 @@
 typedef struct CommandLineArguments
 {
     char* pool_name;
-    char* prefix_address;
     char* pool_size;
+    char* prefix_address;
 } CommandLineArguments;
 
 /**
@@ -161,8 +161,8 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
     int opt;
     opterr = 0; // no error message by getopt
     arguments->pool_name = NULL;
-    arguments->prefix_address = NULL;
     arguments->pool_size = "97"; // default chosen as the largest size strongSwan will add
+    arguments->prefix_address = NULL;
 
     while((opt = getopt(argc, argv, ":p:n:s:h")) != -1)
     {
