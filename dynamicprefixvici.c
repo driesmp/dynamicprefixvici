@@ -31,7 +31,7 @@ static vici_req_t* CreateLoadPoolMessage(char* pool_name, char* address_pool);
 static void FormatOutput(CommandLineArguments* arguments, char* address_pool);
 
 /**
- * @brief get all command line arguments and gives it back in a struct.
+ * @brief Get all command line arguments and gives it back in a struct.
  * If unsupported arguments are given, it terminates the program
  *
  * @param argc
@@ -41,7 +41,7 @@ static void FormatOutput(CommandLineArguments* arguments, char* address_pool);
 static void ParseCommandLineArguments(int argc, char** argv, CommandLineArguments* arguments);
 
 /**
- * @brief prints the usage of the program
+ * @brief Prints the usage of the program
  */
 static void Usage();
 
