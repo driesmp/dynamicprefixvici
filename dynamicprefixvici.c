@@ -54,15 +54,9 @@ int main(int argc, char** argv)
     // Parse command line arguments
     CommandLineArguments arguments;
     ParseCommandLineArguments(argc, argv, &arguments);
-    
-    // 20kB of space in memory to compose a message
-    // A place in memory where the diagnostic message can be stored
-    char between_message[4096] = {0};
-    char diagnostic_message[16384] = {0};
 
     // Add new prefix_address to diagnostic message
-    sprintf(between_message, "prefix_address: %s\n", arguments.prefix_address);
-    strcat(diagnostic_message, between_message);
+    printf("prefix_address: %s\n", arguments.prefix_address);
 
     // Initialize vici library
     vici_init();
@@ -71,8 +65,7 @@ int main(int argc, char** argv)
     char address_pool[50] = {0};
     FormatOutput(&arguments, address_pool);
     
-    sprintf(between_message, "address_pool: %s\n", address_pool);
-    strcat(diagnostic_message, between_message);
+    printf("address_pool: %s\n", address_pool);
 
     vici_req_t* load_pool_message = CreateLoadPoolMessage(arguments.pool_name, address_pool);
 
@@ -87,8 +80,7 @@ int main(int argc, char** argv)
         // Check if the message has been sent correctly
         if(response == NULL)
         {
-            sprintf(between_message, "Status: Unable to send the message: %s\n", strerror(errno));
-            strcat(diagnostic_message, between_message);
+            printf("Status: Unable to send the message: %s\n", strerror(errno));
         }
         else
         {
@@ -114,8 +106,7 @@ int main(int argc, char** argv)
                 parsed_message = "ERROR: Unable to parse";
             }
 
-            sprintf(between_message, "Received message: %s\n", parsed_message);
-            strcat(diagnostic_message, between_message);
+            printf("Received message: %s\n", parsed_message);
         }
 
         vici_disconnect(connection);
@@ -123,11 +114,9 @@ int main(int argc, char** argv)
     else
     {
         // Add to dianogstic message
-        sprintf(between_message, "Status: Connection failed: %s\n", strerror(errno));
-        strcat(diagnostic_message, between_message);
+        printf("Status: Connection failed: %s\n", strerror(errno));
     }
 
-    puts(diagnostic_message);
     return 0;
 }
 
