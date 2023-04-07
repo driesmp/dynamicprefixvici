@@ -55,15 +55,15 @@ int main(int argc, char** argv)
     CommandLineArguments arguments;
     ParseCommandLineArguments(argc, argv, &arguments);
 
-    // Initialize vici library
-    vici_init();
-
     // Create address_pool to be sent
     char address_pool[50] = {0};
     FormatOutput(&arguments, address_pool);
-    
     printf("address_pool: %s\n", address_pool);
 
+    // Initialize vici library
+    vici_init();
+    
+    // Create load-pool message
     vici_req_t* load_pool_message = CreateLoadPoolMessage(arguments.pool_name, address_pool);
 
     // Open connection, assume the system is the standard connection
