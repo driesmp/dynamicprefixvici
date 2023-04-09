@@ -28,7 +28,7 @@ static vici_req_t* CreateLoadPoolMessage(char* pool_name, char* address_pool);
  * @param arguments 
  * @param address_pool 
  */
-static void FormatOutput(CommandLineArguments* arguments, char* address_pool);
+static void FormatAddressPool(CommandLineArguments* arguments, char* address_pool);
 
 /**
  * @brief Get all command line arguments and gives it back in a struct
@@ -54,7 +54,7 @@ int main(int argc, char** argv)
 
     // create address_pool to be sent
     char address_pool[50] = {0};
-    FormatOutput(&arguments, address_pool);
+    FormatAddressPool(&arguments, address_pool);
     printf("address_pool: %s\n", address_pool);
 
     // initialize vici library
@@ -128,7 +128,7 @@ static vici_req_t* CreateLoadPoolMessage(char* pool_name, char* address_pool)
     return message;
 }
 
-static void FormatOutput(CommandLineArguments* arguments, char* address_pool)
+static void FormatAddressPool(CommandLineArguments* arguments, char* address_pool)
 {
     // copy the prefix_address to the address_pool
     strcpy(address_pool, arguments->prefix_address);
