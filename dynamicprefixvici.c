@@ -31,7 +31,7 @@ static vici_req_t* CreateLoadPoolMessage(char* pool_name, char* address_pool);
 static void FormatOutput(CommandLineArguments* arguments, char* address_pool);
 
 /**
- * @brief Get all command line arguments and gives it back in a struct.
+ * @brief Get all command line arguments and gives it back in a struct
  * If unsupported arguments are given, it terminates the program
  *
  * @param argc
@@ -48,33 +48,30 @@ static void Usage();
 
 int main(int argc, char** argv)
 {
-    // For diagnostic reasons
-    bool error_encountered = false;
-
-    // Parse command line arguments
+    // parse command line arguments
     CommandLineArguments arguments;
     ParseCommandLineArguments(argc, argv, &arguments);
 
-    // Create address_pool to be sent
+    // create address_pool to be sent
     char address_pool[50] = {0};
     FormatOutput(&arguments, address_pool);
     printf("address_pool: %s\n", address_pool);
 
-    // Initialize vici library
+    // initialize vici library
     vici_init();
     
-    // Create load-pool message
+    // create load-pool message
     vici_req_t* load_pool_message = CreateLoadPoolMessage(arguments.pool_name, address_pool);
 
-    // Open connection, assume the system is the standard connection
+    // open connection, assume the system is the standard connection
     vici_conn_t* connection = vici_connect(NULL);
 
     if(connection != NULL)
     {
-        // Connection has been made, forward message
+        // connection has been made, forward message
         vici_res_t* response = vici_submit(load_pool_message, connection);
 
-        // Check if the message has been sent correctly
+        // check if the message has been sent correctly
         if(response == NULL)
         {
             printf("Unable to send the message: %s\n", strerror(errno));
@@ -99,7 +96,6 @@ int main(int argc, char** argv)
             }
             else
             {
-                // Unable to parse other than file
                 parsed_message = "ERROR: Unable to parse return message";
             }
 
@@ -134,10 +130,10 @@ static vici_req_t* CreateLoadPoolMessage(char* pool_name, char* address_pool)
 
 static void FormatOutput(CommandLineArguments* arguments, char* address_pool)
 {
-    // Append the pool size to the address
+    // copy the prefix_address to the address_pool
     strcpy(address_pool, arguments->prefix_address);
-
     size_t length_string = strlen(address_pool);
+    // append a "/" with the pool_size
     sprintf(&address_pool[length_string], "/%s", arguments->pool_size);
 }
 
@@ -174,7 +170,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
         }
     }
 
-    // Check whether a pool_name and a prefix_address are defined
+    // check whether a pool_name and a prefix_address are defined
     if(arguments->pool_name == NULL || arguments->prefix_address == NULL)
     {
         puts("pool_name and prefix_address are required, see -h for usage");
