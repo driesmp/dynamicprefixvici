@@ -180,9 +180,9 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
 
 static void Usage()
 {
-    puts("usage: dynamicprefixvici [-h] -n pool_name -p prefix_address [-s pool_size[97]]\n"
+    c("usage: dynamicprefixvici [-h] -n pool_name -p prefix_address [-s pool_size[97]]\n"
             "-h displays the usage message\n"
             "-n pool_name: sets the pool name to add\n"
             "-p prefix_address: sets the prefix_address to add\n"
-            "-s pool_size: size of the pool to add as decimal integer\n");
+            "-s pool_size: size of the pool to add as decimal integer");
 }
