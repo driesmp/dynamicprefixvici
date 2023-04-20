@@ -106,6 +106,10 @@ int main(int argc, char** argv)
                 if(parsed_message[0] != 'y')
                 {
                     error_encountered = true;
+
+                    // Parse the error message from Vici
+                    parsed_message = vici_parse_value_str(response);
+                    puts(parsed_message);
                 }
             }
             else
