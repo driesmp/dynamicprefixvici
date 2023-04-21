@@ -85,7 +85,7 @@ int main(int argc, char** argv)
                 // let the program exit with 1 if vici was unable to add the pool
                 if(parsed_message[0] != 'y')
                 {
-                    // parse the error message from Vici
+                    // parse the error message from vici
                     parsed_message = vici_parse_value_str(response);
                     puts(parsed_message);
                     exit(1);
