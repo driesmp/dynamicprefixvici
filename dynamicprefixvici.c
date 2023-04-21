@@ -107,6 +107,7 @@ int main(int argc, char** argv)
         printf("Connection failed: %s\n", strerror(errno));
     }
 
+    puts(diagnostic_message);
     return 0;
 }
 
