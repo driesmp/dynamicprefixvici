@@ -88,6 +88,7 @@ int main(int argc, char** argv)
                     // parse the error message from Vici
                     parsed_message = vici_parse_value_str(response);
                     puts(parsed_message);
+                    exit(1);
                 }
             }
             else
