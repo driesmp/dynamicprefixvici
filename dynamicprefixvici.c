@@ -110,6 +110,7 @@ int main(int argc, char** argv)
                     // Parse the error message from Vici
                     parsed_message = vici_parse_value_str(response);
                     puts(parsed_message);
+                    exit(1);
                 }
             }
             else
@@ -129,21 +130,10 @@ int main(int argc, char** argv)
         // Add to dianogstic message
         sprintf(between_message, "Status: Connection failed: %s\n", strerror(errno));
         strcat(diagnostic_message, between_message);
-
-        // Let the program exit with 1 no connection could be made
-        error_encountered = true;
     }
 
     puts(diagnostic_message);
-    
-    if(error_encountered)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    return 0;
 }
 
 static vici_req_t* CreateMessage(char* pool_name, char* address_pool)
