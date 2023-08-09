@@ -43,7 +43,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
 /**
  * @brief Prints the usage of the program
  */
-static void Usage();
+static void Usage(void);
 
 
 int main(int argc, char** argv)
@@ -175,7 +175,7 @@ static void ParseCommandLineArguments(int argc, char** argv, CommandLineArgument
     }
 }
 
-static void Usage()
+static void Usage(void)
 {
     puts("usage: dynamicprefixvici [-h] -n pool_name -p prefix_address [-s pool_size[97]]\n"
             "-h displays the usage message\n"
